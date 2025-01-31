@@ -11,18 +11,9 @@ import {
   Animated,
   Easing,
 } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AboutScreen from './AboutScreen';
-import { styled } from 'nativewind';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateUserData, saveUserData } from '../redux/userSlice';
-import SelectInterestsScreen from './SelectInterestsScreen';
-import SavedScreen from './SavedScreen';
 import MapScreen from './MapScreen';
-import SettingsScreen from './SettingsScreen';
-import { ArrowUpOnSquareIcon } from 'react-native-heroicons/solid';
-import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { id, is } from 'date-fns/locale';
 import BookScreen from './BookScreen';
@@ -31,12 +22,6 @@ import CoinScreen from './CoinScreen';
 import places from '../components/placesData';
 
 
-
-const categories = [
-  { id: 2, name: 'Nature & Parks' },
-  { id: 1, name: 'Scenic Sports' },
-  { id: 3, name: 'Art & Culture' },
-];
 
 
 const fontOpenSansBold = 'OpenSans-Bold';
@@ -83,18 +68,15 @@ const HomeScreen = () => {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
   const [selectedScreen, setSelectedScreen] = useState('Home');
   const [currentUser, setCurrentUser] = useState(null);
-  const [todayDay, setTodayDay] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedInterest, setSelectedInterest] = useState(null);
   const [generatedLocation, setGeneratedLocation] = useState(null);
-  const [routedLocation, setRoutedLocation] = useState(null);
   const [dots, setDots] = useState('');
 
   const [isLocationGenerated, setIsLocationGenerated] = useState(false);
   const [isGeneratingNow, setIsGeneratingNow] = useState(false);
-  const [generatedCoinLocation, setGeneratedCoinLocation] = useState(null);
   const spinValue = useRef(new Animated.Value(0)).current;
   const [isRoutedLocationVisible, setIsRoutedLocationVisible] = useState(false);
+
   useEffect(() => {
     if (isGeneratingNow) {
       spinValue.setValue(0);
@@ -129,8 +111,6 @@ const HomeScreen = () => {
 
   const [selectedCategory, setSelectedCategory] = useState('Traditions and customs');
 
-  const [savedLocations, setSavedLocations] = useState([]);
-
   const getRandomLocation = async () => {
     try {
       const usedLocationsKey = 'usedLocations';
@@ -162,55 +142,6 @@ const HomeScreen = () => {
     setGeneratedLocation(randomLocation);
   };
 
-  useEffect(() => {
-    const fetchSelectedInterest = async () => {
-      try {
-        const savedInterest = await AsyncStorage.getItem('selectedInterest');
-        if (savedInterest) {
-          setSelectedInterest(parseInt(savedInterest, 10));
-        }
-      } catch (error) {
-        console.error('Помилка отримання інтересу:', error);
-      }
-    };
-
-    fetchSelectedInterest();
-  }, []);
-
-
-  useEffect(() => {
-    const fetchSavedLocations = async () => {
-      try {
-        const saved = await AsyncStorage.getItem('savedLocations');
-        setSavedLocations(saved ? JSON.parse(saved) : []);
-      } catch (error) {
-        console.error('Помилка завантаження збережених локацій:', error);
-      }
-    };
-
-    fetchSavedLocations();
-  }, [selectedScreen,]);
-
-  useEffect(() => {
-    const fetchTodayDay = async () => {
-      try {
-        const savedDay = await AsyncStorage.getItem('todayDay');
-        if (savedDay !== null) {
-          setTodayDay(parseInt(savedDay, 10));
-        }
-      } catch (error) {
-        console.error('Помилка при завантаженні todayDay:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTodayDay();
-  }, []);
-
-  useEffect(() => {
-    console.log(`today is: ${todayDay}`)
-  }, [todayDay])
 
 
 
@@ -230,10 +161,6 @@ const HomeScreen = () => {
     fetchCurrentUser();
   }, []);
 
-
-  useEffect(() => {
-    console.log("generated location savedId is " + generatedLocation?.savedId)
-  }, [generatedLocation])
 
 
   const shareApp = async (title) => {
@@ -353,7 +280,6 @@ const HomeScreen = () => {
                     }}
                   >
                     {generatedLocation?.description}
-                    {/* Learn about the history and process of Madeira wine production, with a chance to taste different varieties. */}
                   </Text>
 
 
@@ -395,7 +321,6 @@ const HomeScreen = () => {
 
                     <TouchableOpacity
                       onPress={() => {
-                        setRoutedLocation(generatedLocation);
                         setSelectedScreen('Map');
                         if (!isRoutedLocationVisible) {
                           setIsRoutedLocationVisible(true);
@@ -610,14 +535,12 @@ const HomeScreen = () => {
         <AboutScreen setSelectedScreen={setSelectedScreen} />
       ) : selectedScreen === 'Book' ? (
         <BookScreen setSelectedScreen={setSelectedScreen} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-      ) : selectedScreen === 'Saved' ? (
-        <SavedScreen selectedScreen={selectedScreen} setRoutedLocation={setRoutedLocation} setSelectedScreen={setSelectedScreen} routedLocation={routedLocation} />
       ) : selectedScreen === 'Map' ? (
         <MapScreen generatedLocation={generatedLocation} setSelectedScreen={setSelectedScreen} selectedScreen={selectedScreen}
           isRoutedLocationVisible={isRoutedLocationVisible} setIsRoutedLocationVisible={setIsRoutedLocationVisible}
         />
       ) : selectedScreen === 'Coin' ? (
-        <CoinScreen setSelectedScreen={setSelectedScreen} selectedScreen={setSelectedScreen} generatedCoinLocation={generatedCoinLocation}
+        <CoinScreen setSelectedScreen={setSelectedScreen} selectedScreen={setSelectedScreen} 
           setGeneratedLocation={setGeneratedLocation} places={places} selectedInterest={selectedInterest} setIsRoutedLocationVisible={setIsRoutedLocationVisible}
         />
       ) : null}

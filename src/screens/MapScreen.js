@@ -3,7 +3,6 @@ import {
     View,
     Text,
     Image,
-    StyleSheet,
     Dimensions,
     TouchableOpacity,
     SafeAreaView,
@@ -13,8 +12,6 @@ import {
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { styled } from 'nativewind';
-import { ArrowUpOnSquareIcon } from 'react-native-heroicons/solid';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import placesData from '../components/placesData';
 import { ChevronLeftIcon } from 'react-native-heroicons/outline';
 
@@ -23,25 +20,15 @@ const fontOpenSansBold = 'OpenSans-Bold';
 const fontOpenSansRegular = 'OpenSans-Regular';
 const fontOpenSansSemiBold = 'OpenSans-SemiBold';
 
-const MapScreen = ({ generatedLocation, savedLocations, setSelectedScreen, selectedScreen, setSavedLocations, isRoutedLocationVisible, setIsRoutedLocationVisible }) => {
+const MapScreen = ({ generatedLocation, setSelectedScreen, isRoutedLocationVisible, setIsRoutedLocationVisible }) => {
     const [dimensions, setDimensions] = useState(Dimensions.get('window'));
-    const StyledTouchableOpacity = styled(TouchableOpacity);
 
 
     useEffect(() => {
         console.log('routed loc savedId is ' + generatedLocation?.savedId);
     }, []);
 
-    const openLink = (url) => {
-        if (url) {
-            console.log('Opening URL:', url);
-            Linking.openURL(url).catch(() => {
-                Alert.alert('Error', 'Cannot open the link');
-            });
-        } else {
-            Alert.alert('Error', 'No link provided');
-        }
-    };
+
 
 
   const shareApp = async (title) => {

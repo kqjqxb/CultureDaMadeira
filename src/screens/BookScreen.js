@@ -128,9 +128,9 @@ const BookScreen = ({ selectedCategory, setSelectedCategory, setSelectedScreen }
                                     borderColor: selectedCategory === button.title ? '#F15257' : 'transparent',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    width: '48%', // Зміна тут для розміщення двох кнопок у рядку
+                                    width: '48%', 
                                     padding: dimensions.width * 0.035,
-                                    marginBottom: dimensions.width * 0.04, // Додаємо відступ між рядками
+                                    marginBottom: dimensions.width * 0.04, 
                                 }}>
                                 <Image
                                     source={button.icon}

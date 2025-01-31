@@ -74,9 +74,9 @@ const CoinScreen = ({ setSelectedScreen, setGeneratedLocation, generatedLocation
         }),
         height: 10,
         backgroundColor: 'white',
-        alignSelf: 'flex-start', // Align to the left
+        alignSelf: 'flex-start',
         marginTop: dimensions.height * 0.03,
-        maxWidth: dimensions.width * 0.4, // Set max width to dimensions.height * 0.4
+        maxWidth: dimensions.width * 0.4, 
         borderRadius: dimensions.width * 0.07,
     });
 
@@ -203,7 +203,6 @@ const CoinScreen = ({ setSelectedScreen, setGeneratedLocation, generatedLocation
                 </Text>
             </View>
 
-            {/* {isTryed && isSpinStarted && isSpinFinished && ( */}
             {isTryed && isSpinStarted && isSpinFinished ? (
                 <View style={{
                     width: '100%',

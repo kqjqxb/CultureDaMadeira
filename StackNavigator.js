@@ -15,8 +15,7 @@ import { UserProvider, UserContext } from './src/context/UserContext';
 import { Provider, useDispatch } from 'react-redux';
 import store from './src/redux/store';
 import { loadUserData } from './src/redux/userSlice';
-import SelectInterestsScreen from './src/screens/SelectInterestsScreen';
-import DiscoverScreen from './src/screens/DiscoverScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -41,41 +40,49 @@ const AppNavigator = () => {
   const [initializing, setInitializing] = useState(true);
   const [onboardingVisible, setOnboardingVisible] = useState(false);
   const dispatch = useDispatch();
-  const [todayDay, setTodayDay] = useState(1);
 
 
-  
+  const [initializingPolandApp, setInitializingMinSpiritApp] = useState(true);
 
   useEffect(() => {
     dispatch(loadUserData());
   }, [dispatch]);
 
   useEffect(() => {
-    const loadUser = async () => {
+    const loadThisUser = async () => {
       try {
         const deviceId = await DeviceInfo.getUniqueId();
         const storageKey = `currentUser_${deviceId}`;
         const storedUser = await AsyncStorage.getItem(storageKey);
+        const isOnboardingWasAlreadyStarted = await AsyncStorage.getItem('isOnboardingWasAlreadyStarted');
 
         if (storedUser) {
           setUser(JSON.parse(storedUser));
           setOnboardingVisible(false);
+        } else if (isOnboardingWasAlreadyStarted) {
+          setOnboardingVisible(false);
         } else {
           setOnboardingVisible(true);
+          await AsyncStorage.setItem('isOnboardingWasAlreadyStarted', 'true');
         }
       } catch (error) {
-        console.error('Помилка завантаження даних користувача:', error);
+        console.error('Error cur loading of user', error);
       } finally {
-        setInitializing(false);
+        setInitializingMinSpiritApp(false);
       }
     };
-    loadUser();
+    loadThisUser();
   }, [setUser]);
 
-  if (initializing) {
+  if (initializingPolandApp) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#111111' }}>
-        <ActivityIndicator size="large" color="#FF3838" />
+      <View style={{
+        backgroundColor: '#020202',  
+        alignItems: 'center',  
+        flex: 1, 
+        justifyContent: 'center', 
+        }}>
+        <ActivityIndicator size="large" color="white" />
       </View>
     );
   }
@@ -85,8 +92,6 @@ const AppNavigator = () => {
       <Stack.Navigator initialRouteName={onboardingVisible ? 'OnboardingScreen' : 'Home'}>
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="SelectInterestsScreen" component={SelectInterestsScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="DiscoverScreen" component={DiscoverScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

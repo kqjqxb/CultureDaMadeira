@@ -11,11 +11,9 @@ import {
   Share,
   Alert
 } from 'react-native';
-import { styled } from 'nativewind';
-import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from 'react-native-heroicons/outline';
+import { ChevronLeftIcon,  } from 'react-native-heroicons/outline';
 const fontOpenSansBold = 'OpenSans-Bold';
-const fontOpenSansRegular = 'OpenSans-Regular';
-const fontOpenSansSemiBold = 'OpenSans-SemiBold';
+
 
 
 const sharingText = `Madeira is an archipelago located in the Atlantic Ocean, about 1,000 kilometers southwest of Portugal. The island of Madeira is the largest and most developed in the archipelago, and it’s often referred to as the "Island of Eternal Spring" due to its temperate climate throughout the year. The islands, which include Porto Santo, Desertas, and Selvagens, are volcanic in origin, boasting stunning landscapes filled with rugged mountains, deep valleys, and dense forests. The fertile soils and mild climate allow for the cultivation of a variety of crops, including sugar cane, bananas, and the famous Madeira wine grapes.
@@ -52,6 +50,7 @@ const AboutScreen = ({ setSelectedScreen }) => {
       marginBottom: 80,
       display: 'flex',
       alignSelf: 'center',
+      width: '100%',
     }}>
       <Image
         source={require('../assets/images/homeImage.png')}
@@ -108,7 +107,7 @@ const AboutScreen = ({ setSelectedScreen }) => {
           width: '95%',
           marginBottom: dimensions.height * 0.16,
           alignSelf: 'center',
-          paddingLeft: dimensions.width * 0.03,
+          paddingHorizontal: dimensions.width * 0.019,
         }}>
           <Text
             style={{
