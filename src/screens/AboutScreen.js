@@ -69,7 +69,8 @@ const AboutScreen = ({ setSelectedScreen }) => {
         alignSelf: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        width: '100%',
+        width: '95%',
+        maxWidth: '95%'
 
       }}>
         <TouchableOpacity
@@ -80,6 +81,7 @@ const AboutScreen = ({ setSelectedScreen }) => {
             borderRadius: dimensions.width * 0.5,
             zIndex: 100,
             padding: dimensions.width * 0.04,
+            paddingLeft: dimensions.width * 0.01,
             alignSelf: 'flex-start',
           }}>
           <ChevronLeftIcon size={dimensions.width * 0.07} color='white' />
@@ -88,18 +90,21 @@ const AboutScreen = ({ setSelectedScreen }) => {
           style={{
             fontFamily: fontOpenSansBold,
             textAlign: "left",
-            fontSize: dimensions.width * 0.064,
+            fontSize: dimensions.width * 0.055,
             alignSelf: 'center',
             fontWeight: 700,
             color: 'white',
             alignItems: 'center',
             justifyContent: 'center',
-            marginRight: dimensions.width * 0.05
-
+            marginRight: dimensions.width * 0.05,
+            flexShrink: 1
           }}
         >
           General Information About Madeira
         </Text>
+        <View>
+          <Text></Text>
+        </View>
       </View>
 
       <ScrollView style={{ width: '100%' }}>
